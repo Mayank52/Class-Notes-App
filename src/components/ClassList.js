@@ -46,56 +46,75 @@ function ClassList({ classes, changeNotes, createNewClass, renameClass }) {
         <></>
       )}
       <List>
-        {classes.map((clss) => {
-          return (
-            <ListItemContainer key={clss._id}>
-              {!(renameClassActive == clss._id) ? (
-                <ClassNameContainer>
-                  <Link to="/">
-                    <ListItem
-                      classid={clss._id}
-                      onClick={() => {
-                        changeNotes(clss._id);
-                      }}
-                    >
-                      {clss.classname}
-                    </ListItem>
-                  </Link>
-                  <EditIcon
+        {classes.length == 0 ? (
+          <EmptyClassListContainer>
+            <EmptyClassListMessage>No Classes made yet. Click on '+' icon to add new class</EmptyClassListMessage>
+            {/* <NewClassInputContainer>
+              <NewClassInput
+                type="text"
+                value={newClassName}
+                onChange={(e) => {
+                  setNewClassName(e.target.value);
+                }}
+              />
+              <NewClassButton onClick={addNewClassHandler}>
+                Add Class
+              </NewClassButton>
+            </NewClassInputContainer> */}
+          </EmptyClassListContainer>
+        ) : (
+          classes.map((clss) => {
+            return (
+              <ListItemContainer key={clss._id}>
+                {!(renameClassActive == clss._id) ? (
+                  <ClassNameContainer
                     onClick={() => {
-                      setRenameClassActive(clss._id);
+                      changeNotes(clss._id);
                     }}
-                  />
-                </ClassNameContainer>
-              ) : (
-                <RenameClassContainer>
-                  <RenameClassInput
-                    placeholder={clss.classname}
-                    value={renameClassInput}
-                    onChange={(e) => {
-                      setRenameClassInput(e.target.value);
-                    }}
-                  />
-                  <RenameIconsContainer>
-                    <CloseIcon
+                  >
+                    <Link to="/">
+                      <ListItem
+                        classid={clss._id}
+                      >
+                        {clss.classname}
+                      </ListItem>
+                    </Link>
+                    <EditIcon
                       onClick={() => {
-                        setRenameClassActive("");
-                        setRenameClassInput("");
+                        setRenameClassActive(clss._id);
                       }}
                     />
-                    <DoneIcon
-                      onClick={() => {
-                        renameClass(clss._id, renameClassInput);
-                        setRenameClassActive("");
-                        setRenameClassInput("");
+                  </ClassNameContainer>
+                ) : (
+                  <RenameClassContainer>
+                    <RenameClassInput
+                      placeholder={clss.classname}
+                      value={renameClassInput}
+                      onChange={(e) => {
+                        setRenameClassInput(e.target.value);
                       }}
                     />
-                  </RenameIconsContainer>
-                </RenameClassContainer>
-              )}
-            </ListItemContainer>
-          );
-        })}
+                    <RenameIconsContainer>
+                      <CloseIcon
+                        onClick={() => {
+                          setRenameClassActive("");
+                          setRenameClassInput("");
+                        }}
+                      />
+                      <DoneIcon
+                        onClick={() => {
+                          renameClass(clss._id, renameClassInput);
+                          setRenameClassActive("");
+                          setRenameClassInput("");
+                        }}
+                      />
+                    </RenameIconsContainer>
+                  </RenameClassContainer>
+                )}
+              </ListItemContainer>
+            );
+          })
+        )}
       </List>
     </Container>
   );
@@ -104,12 +123,12 @@ function ClassList({ classes, changeNotes, createNewClass, renameClass }) {
 export default ClassList;
 
 const Container = styled.div`
-  flex-grow: 1;
-  // background-color: red;
+  // flex-grow: 1;
   display: flex;
   flex-direction: column;
   border-right: 1px solid grey;
   padding: 1%;
+  width: 18vw;
 `;
 const ClassListHeader = styled.div`
   display: flex;
@@ -165,3 +184,5 @@ const RenameClassInput = styled.input`
 const RenameIconsContainer = styled.div`
   display: flex;
 `;
+const EmptyClassListContainer = styled.div``;
+const EmptyClassListMessage = styled.div``;

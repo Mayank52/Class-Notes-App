@@ -19,7 +19,7 @@ function Content() {
       let classesObj = await axios.get("http://localhost:3000/api/class");
       let classesList = classesObj.data.data;
       setClasses(classesList);
-      changeNotes(classesList[0]._id);
+      if (classesList.length > 0) changeNotes(classesList[0]._id);
     }
     fetchData();
   }, []);
@@ -44,17 +44,21 @@ function Content() {
     if (selectedClass[0]) {
       let classNotes = selectedClass[0].classnotes;
       setNotes(classNotes);
-      // setActiveNote(classNotes[0]);
+      console.log("notes set");
     }
   }, [activeClassId]);
 
   //sets the active classId which triggers the useEffect of activeClassId which updates the notes
   const changeNotes = (classId) => {
+    console.log("change notes called");
     setActiveClassId(classId);
   };
 
   const createNewClass = async (classname) => {
     if (!classname) return;
+
+    console.log("Creating Class")
+
     const classObj = await axios.post("http://localhost:3000/api/class", {
       classname,
     });
@@ -64,14 +68,50 @@ function Content() {
   };
 
   const deleteClass = async () => {
+    console.log("Deleting Class")
+
     const deletedClassObj = await axios.delete(
       `http://localhost:3000/api/class/${activeClassId}`
     );
+
+    console.log(deletedClassObj);
+
     let updatedClasses = classes.filter(
       (classobj) => classobj._id != activeClassId
     );
     setClasses(updatedClasses);
-    changeNotes(classes[0]._id);
+    if (updatedClasses.length > 0) changeNotes(updatedClasses[0]._id);
+    else setNotes([]);
+  };
+
+  const renameClass = async (classId, newClassname) => {
+    console.log("Renaming Class")
+
+    let updatedClassObj = await axios.patch(
+      `http://localhost:3000/api/class/${classId}`,
+      { classname: newClassname }
+    );
+
+    console.log(updatedClassObj);
+
+    let updatedClasses = classes.map((classObj) => {
+      if (classObj._id == classId)
+        return { ...classObj, classname: newClassname };
+      else return classObj;
+    });
+
+    setClasses(updatedClasses);
+  };
+
+  const updateClass = (updateClassObj) => {
+    console.log("Updating Class")
+
+    let updatedClasses = classes.map((classObj) => {
+      if (classObj._id == updateClassObj._id) return updateClassObj;
+      else return classObj;
+    });
+
+    setClasses(updatedClasses);
   };
 
   const createNote = async () => {
@@ -90,6 +130,7 @@ function Content() {
       console.log(newNoteObj);
 
       setNotes(newNoteObj.data.data.classnotes);
+      updateClass(newNoteObj.data.data);
     } catch (error) {
       console.log(error);
     }
@@ -97,6 +138,8 @@ function Content() {
 
   const updateNote = async () => {
     try {
+      console.log("Updating Note")
+
       console.log(activeClassId, activeNote._id);
       let updateobj = {
         notename: activeNote.notename,
@@ -111,12 +154,15 @@ function Content() {
       console.log(updatedNoteObj);
 
       setNotes(updatedNoteObj.data.data.classnotes);
+      updateClass(updatedNoteObj.data.data);
     } catch (error) {
       console.log(error);
     }
   };
 
   const deleteNote = async (noteId) => {
+    console.log("Deleting Note")
+
     console.log(activeClassId, noteId);
     let deletedNoteObj = await axios.delete(
       `http://localhost:3000/api/notes/${activeClassId}/${noteId}`
@@ -125,25 +171,9 @@ function Content() {
 
     let updatedNotes = notes.filter((note) => note._id != noteId);
     setNotes(updatedNotes);
+    updateClass(deletedNoteObj.data.data);
   };
 
-  const renameClass = async (classId, newClassname) => {
-    let updatedClassObj = await axios.patch(
-      `http://localhost:3000/api/class/${classId}`,
-      { classname: newClassname }
-    );
-
-    console.log(updatedClassObj);
-
-    let updatedClasses = classes.map((classObj) => {
-      if (classObj._id == classId)
-        return { ...classObj, classname: newClassname };
-      else return classObj;
-    });
-
-    setClasses(updatedClasses);
-  };
-  
   return (
     <div>
       <Container>

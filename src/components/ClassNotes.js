@@ -35,17 +35,23 @@ function ClassNotes({ notes, deleteNote, deleteClass, setActiveNote }) {
         </HeaderBlock>
       </Header>
       <NotesContainer>
-        {notes.map((note) => {
-          return (
-            <Note
-              key={note._id}
-              id={note._id}
-              note={note}
-              deleteNote={deleteNote}
-              setActiveNote={setActiveNote}
-            />
-          );
-        })}
+        {notes.length > 0 ? (
+          notes.map((note) => {
+            return (
+              <Note
+                key={note._id}
+                id={note._id}
+                note={note}
+                deleteNote={deleteNote}
+                setActiveNote={setActiveNote}
+              />
+            );
+          })
+        ) : (
+          <EmptyNotesContainer>
+            <EmptyNotesMessage>No Notes here. Click on '+' icon to add new notes</EmptyNotesMessage>
+          </EmptyNotesContainer>
+        )}
       </NotesContainer>
     </Container>
   );
@@ -54,9 +60,10 @@ function ClassNotes({ notes, deleteNote, deleteClass, setActiveNote }) {
 export default ClassNotes;
 
 const Container = styled.div`
-  flex-grow: 6;
   display: flex;
   flex-direction: column;
+  width: 82vw;
+  padding: 2%;
 `;
 
 const NotesContainer = styled.div`
@@ -67,13 +74,10 @@ const AddNewNoteContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  // width: 30%;
-  // font-size: 2rem;
 `;
 const Header = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: 2%;
 `;
 const HeaderH1 = styled.h1``;
 
@@ -82,5 +86,7 @@ const HeaderBlock = styled.div`
 `;
 
 const ClassDeleteButton = styled.button`
-  // display: block;
 `;
+
+const EmptyNotesContainer = styled.div``
+const EmptyNotesMessage = styled.div``
