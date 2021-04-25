@@ -1,7 +1,7 @@
 # Class Notes App
 
 ### Description:
-- User can create classes and notes to different classes.
+- User can create classes, add notes to classes
 
 ### Tech Used:
 - React.js
