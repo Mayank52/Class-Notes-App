@@ -1,5 +1,9 @@
 # Class Notes App
-## Tech Used:
+
+### Description:
+- User can create classes and notes to different classes.
+
+### Tech Used:
 - React.js
 - Context API
 - Styled Components
