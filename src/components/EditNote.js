@@ -3,16 +3,19 @@ import styled from "styled-components";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import { Link } from "react-router-dom";
 import { useHistory } from "react-router";
+import TextEditor from "./TextEditor";
 
-function EditNote({
-  note,
-  setActiveNote,
-  setSaveButtonClicked,
-}) {
+function EditNote({note, setActiveNote,setSaveButtonClicked,}) {
   const [notename, setNoteName] = useState("");
   const [notecontent, setNoteContent] = useState("");
 
   const history = useHistory();
+
+
+  useEffect(()=>{
+    console.log("Note content: ", notecontent)
+  }, [notecontent])
+
 
   useEffect(() => {
     if (note) {
@@ -65,12 +68,14 @@ function EditNote({
           <SaveButton onClick={saveNote}>Save</SaveButton>
         </HeaderBlock>
       </NewNoteHeader>
-      <NewNoteContent
+      {/* <NewNoteContent
         value={notecontent}
         onChange={(e) => {
           setNoteContent(e.target.value);
         }}
-      />
+      /> */}
+
+      <TextEditor notecontent={note? note.notecontent: []} setNoteContent={setNoteContent}/>
     </Container>
   );
 }
