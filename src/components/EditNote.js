@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { useHistory } from "react-router";
 import axios from "axios";
 import { useStateValue } from "../Context/StateProvider";
+import TextEditor from "./TextEditor";
 
 function EditNote() {
   const [{ activeClassId, activeNote }, dispatch] = useStateValue();
@@ -132,12 +133,10 @@ function EditNote() {
         <HeaderBlock>
           <SaveButton onClick={saveNote}>Save</SaveButton>
         </HeaderBlock>
-      </NewNoteHeader>
-      <NewNoteContent
-        value={notecontent}
-        onChange={(e) => {
-          setNoteContent(e.target.value);
-        }}
+      </NewNoteHeader>      
+      <TextEditor
+        notecontent={note ? note.notecontent : []}
+        setNoteContent={setNoteContent}
       />
     </Container>
   );
@@ -163,16 +162,6 @@ const NoteName = styled.input`
   }
 `;
 const NoteDate = styled.div``;
-const NewNoteContent = styled.textarea`
-  width: 100%;
-  height: 100%;
-  word-wrap: wrap;
-  word-break: break-all;
-  margin-top: 1%;
-  :focus {
-    outline: none;
-  }
-`;
 const HeaderBlock = styled.div``;
 const SaveButton = styled.button``;
 const BackIconContainer = styled.div`
