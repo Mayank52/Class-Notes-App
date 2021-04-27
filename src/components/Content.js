@@ -8,11 +8,11 @@ import EditNote from "./EditNote";
 import { useStateValue } from "../Context/StateProvider";
 
 function Content() {
-  const [{ classes, activeClassId }, dispatch] = useStateValue();
+  const [{ user, classes, activeClassId }, dispatch] = useStateValue();
 
   useEffect(() => {
     async function fetchData() {
-      let classesObj = await axios.get("http://localhost:3000/api/class");
+      let classesObj = await axios.get(`http://localhost:3000/api/class/${user.uid}`);
       let classesList = classesObj.data.data;
       if (classesList.length > 0) {
         dispatch({
@@ -25,8 +25,27 @@ function Content() {
         });
       }
     }
-    fetchData();
-  }, []);
+    if(user) fetchData();
+    else{
+      //if no user is signed in then, reset the state
+      dispatch({
+        type: "SET_CLASSES",
+        payload: [],
+      });
+      dispatch({
+        type: "SET_ACTIVE_CLASS",
+        payload: "",
+      });
+      dispatch({
+        type: "SET_NOTES",
+        payload: [],
+      });
+      dispatch({
+        type: "CHANGE_ACTIVE_NOTE",
+        payload: null,
+      });
+    }
+  }, [user]);
 
   useEffect(() => {
     console.log("active class set to", activeClassId);

@@ -9,7 +9,7 @@ import { useStateValue } from "../Context/StateProvider";
 import axios from "axios";
 
 function ClassList() {
-  const [{ classes }, dispatch] = useStateValue();
+  const [{ user, classes }, dispatch] = useStateValue();
   const [newClassInput, setNewClassInput] = useState(false);
   const [newClassName, setNewClassName] = useState("");
   const [renameClassActive, setRenameClassActive] = useState("");
@@ -25,10 +25,13 @@ function ClassList() {
     if (!classname) return;
 
     console.log("Creating Class");
-
-    const classObj = await axios.post("http://localhost:3000/api/class", {
-      classname,
-    });
+    
+    const classObj = await axios.post(
+      `http://localhost:3000/api/class/${user.uid}`,
+      {
+        classname,
+      }
+    );
     console.log(classObj.data.data);
 
     dispatch({

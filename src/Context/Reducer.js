@@ -3,6 +3,7 @@ export const initialState = {
   classes: [],
   activeClassId: null,
   activeNote: null,
+  user: JSON.parse(localStorage.getItem("user")),
 };
 
 export const reducer = (state, action) => {
@@ -93,6 +94,11 @@ export const reducer = (state, action) => {
       return {
         ...state,
         activeNote: action.payload,
+      };
+    case "SET_USER":
+      return {
+        ...state,
+        user: action.payload,
       };
     default:
       return state;

@@ -7,7 +7,7 @@ import axios from "axios";
 import { useStateValue } from "../Context/StateProvider";
 
 function ClassNotes() {
-  const [{ notes, activeClassId }, dispatch] = useStateValue();
+  const [{ user, notes, activeClassId }, dispatch] = useStateValue();
   let history = useHistory();
 
   const openNoteEditor = () => {
@@ -30,7 +30,7 @@ function ClassNotes() {
     console.log("Deleting Class");
 
     const deletedClassObj = await axios.delete(
-      `http://localhost:3000/api/class/${activeClassId}`
+      `http://localhost:3000/api/class/${user.uid}/${activeClassId}`
     );
 
     console.log(deletedClassObj);
