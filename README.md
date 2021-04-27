@@ -12,3 +12,4 @@
 - Express
 - Node.js
 - MongoDb
+- Firebase Authentication
