@@ -15,7 +15,6 @@ function Note({ note, deleteNote, setActiveNote }) {
       <NoteHeader>
         <NoteDate>{note.createdon}</NoteDate>
         <NoteButtons>
-          {/* <EditIcon/> */}
           <DeleteIcon
             onClick={() => {
               deleteNote(note._id);

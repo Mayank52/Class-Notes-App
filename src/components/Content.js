@@ -6,7 +6,7 @@ import ClassNotes from "./ClassNotes";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import EditNote from "./EditNote";
 
-function Content() {
+function Content({user}) {
   const [notes, setNotes] = useState([]);
   const [classes, setClasses] = useState([]);
   const [activeClassId, setActiveClassId] = useState("");
@@ -16,13 +16,19 @@ function Content() {
 
   useEffect(() => {
     async function fetchData() {
-      let classesObj = await axios.get("http://localhost:3000/api/class");
+      let classesObj = await axios.get(`http://localhost:3000/api/class/${user.uid}`);
       let classesList = classesObj.data.data;
       setClasses(classesList);
       if (classesList.length > 0) changeNotes(classesList[0]._id);
     }
-    fetchData();
-  }, []);
+    if(user) fetchData();
+    else{
+      setClasses([])
+      setNotes([])
+      setActiveClassId("")
+      setActiveNote(null)
+    }
+  }, [user]);
 
   useEffect(() => {
     console.log("Active Note set to: ", activeNote);
@@ -59,7 +65,7 @@ function Content() {
 
     console.log("Creating Class")
 
-    const classObj = await axios.post("http://localhost:3000/api/class", {
+    const classObj = await axios.post(`http://localhost:3000/api/class/${user.uid}`, {
       classname,
     });
     console.log(classObj.data.data);
@@ -71,7 +77,7 @@ function Content() {
     console.log("Deleting Class")
 
     const deletedClassObj = await axios.delete(
-      `http://localhost:3000/api/class/${activeClassId}`
+      `http://localhost:3000/api/class/${user.uid}/${activeClassId}`
     );
 
     console.log(deletedClassObj);

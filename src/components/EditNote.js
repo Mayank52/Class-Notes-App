@@ -5,17 +5,11 @@ import { Link } from "react-router-dom";
 import { useHistory } from "react-router";
 import TextEditor from "./TextEditor";
 
-function EditNote({note, setActiveNote,setSaveButtonClicked,}) {
+function EditNote({ note, setActiveNote, setSaveButtonClicked }) {
   const [notename, setNoteName] = useState("");
   const [notecontent, setNoteContent] = useState("");
 
   const history = useHistory();
-
-
-  useEffect(()=>{
-    console.log("Note content: ", notecontent)
-  }, [notecontent])
-
 
   useEffect(() => {
     if (note) {
@@ -68,14 +62,11 @@ function EditNote({note, setActiveNote,setSaveButtonClicked,}) {
           <SaveButton onClick={saveNote}>Save</SaveButton>
         </HeaderBlock>
       </NewNoteHeader>
-      {/* <NewNoteContent
-        value={notecontent}
-        onChange={(e) => {
-          setNoteContent(e.target.value);
-        }}
-      /> */}
 
-      <TextEditor notecontent={note? note.notecontent: []} setNoteContent={setNoteContent}/>
+      <TextEditor
+        notecontent={note ? note.notecontent : []}
+        setNoteContent={setNoteContent}
+      />
     </Container>
   );
 }
@@ -100,16 +91,6 @@ const NoteName = styled.input`
   }
 `;
 const NoteDate = styled.div``;
-const NewNoteContent = styled.textarea`
-  width: 100%;
-  height: 100%;
-  word-wrap: wrap;
-  word-break: break-all;
-  margin-top: 1%;
-  :focus {
-    outline: none;
-  }
-`;
 const HeaderBlock = styled.div``;
 const SaveButton = styled.button``;
 const BackIconContainer = styled.div`

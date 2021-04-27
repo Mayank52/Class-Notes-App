@@ -6,6 +6,7 @@ import "quill/dist/quill.snow.css";
 export default function TextEditor({ notecontent, setNoteContent }) {
   const [quill, setQuill] = useState();
 
+  //use callback, as useState may run earlier than the container div has been made and cause errors
   const wrapperRef = useCallback((wrapper) => {
     if (wrapper == null) return;
 
@@ -16,10 +17,7 @@ export default function TextEditor({ notecontent, setNoteContent }) {
     wrapper.append(editor);
 
     const q = new Quill(editor, { theme: "snow" });
-    console.log(notecontent);
-    console.log(q.setContents(notecontent));
-    // console.log(q.getContents());
-
+    q.setContents(notecontent);
     setQuill(q);
   }, []);
 
@@ -28,31 +26,26 @@ export default function TextEditor({ notecontent, setNoteContent }) {
 
     const handler = (delta, oldDelta, source) => {
       if (source !== "user") return;
-
       const value = quill.getContents().ops;
       setNoteContent(value)
-      // console.log(delta.ops, oldDelta.ops);
     };
+
+    //add text change event on quill
     quill.on("text-change", handler);
 
+    //remove the event on cleanup otherwise the application hangs
     return () => {
       quill.off("text-change", handler);
     };
   });
-
-  //  useEffect(()=>{
-  //   console.log("Note content: ", notecontent)
-  // }, [])
 
   return <Container id="container" ref={wrapperRef}></Container>;
 }
 
 const Container = styled.div`
   margin-top: 2%;
-  // max-width: 78vw;
   .ql-editor {
     min-height: 70vh;
-    // box-shadow: 0 0 5px 0 rgba(0, 0, 0.5);
   }
   .ql-container {
   }
