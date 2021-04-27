@@ -7,6 +7,7 @@
 - React.js
 - Context API
 - Styled Components
+- Quill Text Editor
 - Material UI
 - Express
 - Node.js
