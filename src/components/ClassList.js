@@ -110,7 +110,7 @@ function ClassList() {
                       changeNotes(clss._id, dispatch);
                     }}
                   >
-                    <Link to="/">
+                    <Link to="/notes">
                       <ListItem classid={clss._id}>{clss.classname}</ListItem>
                     </Link>
                     <EditIcon

@@ -3,82 +3,10 @@ import styled from "styled-components";
 import axios from "axios";
 import { auth, provider } from "../config/firebase";
 import { useStateValue } from "../Context/StateProvider";
+import { Link } from "react-router-dom";
 
 function Header() {
   const [{ user }, dispatch] = useStateValue();
-
-  const signIn = () => {
-    auth
-      .signInWithPopup(provider)
-      .then((result) => {
-        let user = result.user;
-        console.log(user);
-        let newUser = {
-          name: user.displayName,
-          photo: user.photoURL,
-          email: user.email,
-          uid: user.uid,
-        };
-        checkIfUserExists(newUser);
-      })
-      .catch((error) => {
-        console.log(error.message);
-      });
-  };
-
-  const checkIfUserExists = async (userObj) => {
-    const dbUserObj = await axios.get(
-      `http://localhost:3000/api/user/${userObj.uid}`
-    );
-    console.log(dbUserObj.data.data);
-
-    if (dbUserObj.data.data) {
-      localStorage.setItem("user", JSON.stringify(userObj));
-
-      dispatch({
-        type: "SET_USER",
-        payload: userObj,
-      });
-    } else console.log("Register first!!");
-  };
-
-  const register = () => {
-    auth
-      .signInWithPopup(provider)
-      .then((result) => {
-        let user = result.user;
-        console.log(user);
-        let newUser = {
-          name: user.displayName,
-          email: user.email,
-          uid: user.uid,
-        };
-        createUser(newUser);
-      })
-      .catch((error) => {
-        console.log(error.message);
-      });
-  };
-
-  const createUser = async (newUser) => {
-    try {
-      console.log("Creating new user");
-      console.log(newUser);
-      const userObj = await axios.post(
-        "http://localhost:3000/api/user",
-        newUser
-      );
-      console.log(userObj);
-
-      localStorage.setItem("user", JSON.stringify(newUser));
-      dispatch({
-        type: "SET_USER",
-        payload: newUser,
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   const signOut = () => {
     auth.signOut().then(() => {
@@ -93,21 +21,33 @@ function Header() {
   return (
     <div>
       <Container>
-        <NavbarBrand>Class Notes</NavbarBrand>
+        <Link to="/">
+          <NavbarBrand>NoteTaker</NavbarBrand>
+        </Link>
+
         <NavbarLinks>
-          <SigninContainer>
-            {user ? (
-              <LoggedInContainer>
+          <Link to="contactus">
+            <NavbarLink>Contact Us</NavbarLink>
+          </Link>
+          <Link to="notes">
+            <NavbarLink>Notes</NavbarLink>
+          </Link>
+          {user ? (
+            <>
+              <NavbarLink>
                 <UserContainer>Hello, {user.name}</UserContainer>
+              </NavbarLink>
+              <NavbarLink>
                 <SignoutButton onClick={signOut}>Sign out</SignoutButton>
-              </LoggedInContainer>
-            ) : (
-              <NotLoggedInContainer>
-                <SigninButton onClick={signIn}>Sign In With Google</SigninButton>
-                <RegisterButton onClick={register}>Register</RegisterButton>
-              </NotLoggedInContainer>
-            )}
-          </SigninContainer>
+              </NavbarLink>
+            </>
+          ) : (
+            <NavbarLink>
+              <Link to="/signin">
+                <SigninButton>Sign In</SigninButton>
+              </Link>
+            </NavbarLink>
+          )}
         </NavbarLinks>
       </Container>
     </div>
@@ -124,9 +64,14 @@ const Container = styled.div`
   height: 3vh;
 `;
 
-const NavbarBrand = styled.span``;
+const NavbarBrand = styled.span`
+  width: 50%;
+`;
 const NavbarLinks = styled.div`
   display: flex;
+  width: 50%;
+  justify-content: space-evenly;
+  align-items: center;
 `;
 const NavbarLink = styled.div``;
 
@@ -135,9 +80,8 @@ const SigninContainer = styled.div`
   align-item: center;
 `;
 const UserContainer = styled.div``;
-const SigninButton = styled.button``;
-const RegisterButton = styled.button``;
-const SignoutButton = styled.button``;
+const SigninButton = styled.div``;
+const SignoutButton = styled.div``;
 const LoggedInContainer = styled.div`
   display: flex;
 `;

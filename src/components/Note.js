@@ -15,7 +15,7 @@ function Note({ note }) {
       payload: note,
     });
 
-    history.push("/newNote");
+    history.push("/editNote");
   };
 
   const deleteNote = async (noteId) => {

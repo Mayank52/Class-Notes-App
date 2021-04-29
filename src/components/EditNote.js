@@ -26,7 +26,7 @@ function EditNote() {
         ? updateNote(activeNote, activeClassId, dispatch)
         : createNote(activeNote, activeClassId, dispatch);
 
-      history.push("/");
+      history.push("/notes");
     }
     return () => {
       setSaveButtonClicked(false);
@@ -116,7 +116,7 @@ function EditNote() {
       <NewNoteHeader>
         <HeaderBlock>
           <BackIconContainer>
-            <Link to="/">
+            <Link to="/notes">
               <ArrowBackIcon />
             </Link>
           </BackIconContainer>

@@ -66,12 +66,12 @@ function Content() {
     <Container>
       <ClassList />
       <Switch>
-        <Route path="/newNote">
+        <Route path="/editNote">
           <EditNote />
         </Route>
-        <Route path="/">
+        {/* <Route path="/viewNotes"> */}
           <ClassNotes />
-        </Route>
+        {/* </Route> */}
       </Switch>
     </Container>
   );

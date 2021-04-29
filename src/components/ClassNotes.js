@@ -23,7 +23,7 @@ function ClassNotes() {
       payload: newActiveNote,
     });
 
-    history.push("/newNote");
+    history.push("/editNote");
   };
 
   const deleteClass = async () => {
